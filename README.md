@@ -91,8 +91,7 @@ sudo tee /etc/systemd/system/celestia-appd.service > /dev/null <<EOF
 Description=Celestia node
 After=network-online.target
 [Service]
-User=$USER
-WorkingDirectory=$HOME/.celestia-app
+User=root
 ExecStart=$(which celestia-appd) start --home $HOME/.celestia-app
 Restart=on-failure
 RestartSec=5
