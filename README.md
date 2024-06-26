@@ -20,7 +20,7 @@ sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential gi
 sudo apt install make -y
 ```
 
-### Go Yükleme
+### Go Yüklemek
 ```
 ver="1.21.1"
 cd $HOME
@@ -45,7 +45,9 @@ celestia version
 ```
 
 ### Inıt Node
+```
 celestia-appd init "Node Name" --chain-id mocha-4
+```
 
 ### Genesis ve Addrbook İndirmek
 ```
