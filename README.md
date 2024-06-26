@@ -136,5 +136,5 @@ celestia-appd tx staking create-validator \
 -y
 ```
 
-NOT: Ağda olan bütün durumları ve tx sonuçarı için [x](https://testnet.celestia.explorers.guru/) sitesini ziyaret edebilirsiniz.
+NOT: Ağda olan bütün durumları ve tx sonuçarı için [Explorer](https://testnet.celestia.explorers.guru/) için siteyi ziyaret edebilirsiniz.
 
