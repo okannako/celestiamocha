@@ -138,3 +138,103 @@ celestia-appd tx staking create-validator \
 
 NOT: Ağda olan bütün durumları ve tx sonuçarı için [Explorer](https://testnet.celestia.explorers.guru/) için siteyi ziyaret edebilirsiniz.
 
+
+## Bridge Node Minimum Sistem Gereksinimleri
+
+ - Memory: 16 GB RAM (Minimum)
+ - CPU: 6 Cores
+ - Disk: 10 TB SSD Storage
+ - Bandwidth: 1 Gbps for Download/100 Mbps for Upload
+
+### Sistem Güncellemeleri
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y
+```
+
+### Go Yüklemek
+```
+ver="1.21.1"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+```
+
+### Celestia-Node Yüklemek
+```
+cd $HOME 
+rm -rf celestia-node 
+git clone https://github.com/celestiaorg/celestia-node.git 
+cd celestia-node/ 
+git checkout tags/v0.14.0 
+make build 
+make install 
+make cel-key 
+```
+
+- Versiyon Kontrol ```celestia version``` >>> 0.14.0
+
+### Init İşlemi
+```
+celestia bridge init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha
+```
+
+### Cüzdan Oluşturma
+```
+./cel-key list --node.type bridge --p2p.network mocha
+```
+
+### Faucetten Token Almak
+- Discord kanalına giderek cüzdan adresinize test token almalısınız >>> https://discord.gg/wpuN2xx7yQ
+
+### Servis Oluşturma
+```
+sudo tee /etc/systemd/system/celestia-bridge.service > /dev/null <<EOF
+[Unit]
+Description=celestia-bridge Cosmos daemon
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/celestia bridge start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia.observer --p2p.network mocha-4
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=100000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Bridge Node Başlatmak
+```
+sudo systemctl daemon-reload
+sudo systemctl enable celestia-bridge
+sudo systemctl restart celestia-bridge && sudo journalctl -u celestia-bridge -f
+```
+
+### Node Id Öğrenmek
+```
+AUTH_TOKEN=$(celestia bridge auth admin --p2p.network mocha)
+```
+```
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+```
+
+### Bridge Node Silmek
+```
+sudo systemctl stop celestia-bridge
+sudo systemctl disable celestia-bridge
+rm -rf $HOME/celestia-node  
+rm -rf $HOME/.celestia-bridge-mocha-4
+rm -rf $HOME/.celestia-app
+```
