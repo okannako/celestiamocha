@@ -186,7 +186,7 @@ celestia bridge init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha
 
 ### Cüzdan Oluşturma
 ```
-./cel-key list --node.type bridge --p2p.network mocha
+./cel-key list --node.type bridge --p2p.network mocha --keyring-backend test
 ```
 
 ### Faucetten Token Almak
@@ -201,7 +201,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/celestia bridge start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia.observer --p2p.network mocha-4
+ExecStart=/usr/local/bin/celestia bridge start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
@@ -215,7 +215,7 @@ EOF
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable celestia-bridge
-sudo systemctl restart celestia-bridge && sudo journalctl -u celestia-bridge -f
+sudo systemctl start celestia-bridge && sudo journalctl -u celestia-bridge -f
 ```
 
 ### Node Id Öğrenmek
@@ -236,5 +236,195 @@ sudo systemctl stop celestia-bridge
 sudo systemctl disable celestia-bridge
 rm -rf $HOME/celestia-node  
 rm -rf $HOME/.celestia-bridge-mocha-4
+rm -rf $HOME/.celestia-app
+```
+
+## Full Storage Node Sistem Gereksinimleri
+
+ - Memory: 16 GB RAM (Minimum)
+ - CPU: Quad-Core Cores
+ - Disk: 10 TB SSD Storage
+ - Bandwidth: 1 Gbps for Download/100 Mbps for Upload
+
+### Sistem Güncellemeleri
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y
+```
+
+### Go Yüklemek
+```
+ver="1.21.1"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+```
+
+### Celestia-Node Yüklemek
+```
+cd $HOME 
+rm -rf celestia-node 
+git clone https://github.com/celestiaorg/celestia-node.git 
+cd celestia-node/ 
+git checkout tags/v0.14.0 
+make build 
+make install 
+make cel-key 
+```
+
+### Init İşlemi
+```
+celestia full init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha
+```
+
+### Cüzdan Oluşturma
+```
+./cel-key list --p2p.network mocha --node.type full --keyring-backend test
+```
+
+### Servis Oluşturma
+```
+sudo tee /etc/systemd/system/celestia-full.service > /dev/null <<EOF
+[Unit]
+Description=celestia-bridge Cosmos daemon
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/celestia full start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=100000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Node Başlatmak
+```
+sudo systemctl daemon-reload
+sudo systemctl enable celestia-full
+sudo systemctl start celestia-full && sudo journalctl -u celestia-full -f
+```
+
+### Node Id Öğrenmek
+```
+AUTH_TOKEN=$(celestia full auth admin --p2p.network mocha)
+```
+```
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+```
+
+### Full Storage Node Silmek
+```
+sudo systemctl stop celestia-full
+sudo systemctl disable celestia-full
+rm -rf $HOME/celestia-node  
+rm -rf $HOME/.celestia-full-mocha-4
+rm -rf $HOME/.celestia-app
+```
+
+## Light Node Sistem Gereksinimleri
+
+ - Memory: 500 MB RAM (Minimum)
+ - CPU: Single Core
+ - Disk: 100 GB SSD Storage
+ - Bandwidth: 56 Kbps 
+
+### Sistem Güncellemeleri
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
+sudo apt install make -y
+```
+
+### Go Yüklemek
+```
+ver="1.21.1"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+```
+
+### Celestia-Node Yüklemek
+```
+cd $HOME 
+rm -rf celestia-node 
+git clone https://github.com/celestiaorg/celestia-node.git 
+cd celestia-node/ 
+git checkout tags/v0.14.0 
+make build 
+make install 
+make cel-key 
+```
+
+### Cüzdan Oluşturma
+```
+./cel-key list --node.type light --p2p.network mocha --keyring-backend test
+```
+
+### Init İşlemi
+```
+celestia light init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha
+```
+
+### Servis Oluşturma
+```
+sudo tee /etc/systemd/system/celestia-light.service > /dev/null <<EOF
+[Unit]
+Description=celestia-bridge Cosmos daemon
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/celestia light start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=100000
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+### Node Başlatmak
+```
+sudo systemctl daemon-reload
+sudo systemctl enable celestia-full
+sudo systemctl start celestia-full && sudo journalctl -u celestia-full -f
+```
+
+### Node Id Öğrenmek
+```
+AUTH_TOKEN=$(celestia light auth admin --p2p.network mocha)
+```
+```
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+```
+
+### Light Node Silmek
+```
+sudo systemctl stop celestia-light
+sudo systemctl disable celestia-light
+rm -rf $HOME/celestia-node  
+rm -rf $HOME/.celestia-full-mocha-4
 rm -rf $HOME/.celestia-app
 ```
