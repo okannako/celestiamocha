@@ -122,7 +122,7 @@ celestia-appd tx staking create-validator \
 --amount 1000000utia \
 --from cuzdanismi \
 --moniker "Monikerismi" \
---chain-id celestia \
+--chain-id mocha \
 --commission-rate 0.1 \
 --commission-max-rate 0.2 \
 --commission-max-change-rate 0.01 \
