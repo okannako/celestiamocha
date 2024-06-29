@@ -1,4 +1,4 @@
-![Car Crash Tv (21)](https://github.com/okannako/celestiamocha/assets/73176377/a0079446-7575-4b8b-befa-f7bfd8844780)
+![207](https://github.com/okannako/celestiamocha/assets/73176377/55fab58c-cf7e-4062-ad3b-8f981612a648)
 
 * Celestia Mocha test ağı uzun süredir aktif bir şekilde çalışıyor ve geliştirmeler sürekli devam ettiği için belirsiz bir süre zarfında çalışmaya devam edecek.
 
