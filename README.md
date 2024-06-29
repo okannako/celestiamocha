@@ -425,6 +425,6 @@ curl -X POST \
 sudo systemctl stop celestia-light
 sudo systemctl disable celestia-light
 rm -rf $HOME/celestia-node  
-rm -rf $HOME/.celestia-full-mocha-4
+rm -rf $HOME/.celestia-light-mocha
 rm -rf $HOME/.celestia-app
 ```
