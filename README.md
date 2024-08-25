@@ -181,7 +181,7 @@ make cel-key
 
 ### Init İşlemi
 ```
-celestia bridge init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha
+celestia bridge init --core.ip rpc-mocha.pops.one:26657 --p2p.network mocha-4
 ```
 
 ### Cüzdan Oluşturma
