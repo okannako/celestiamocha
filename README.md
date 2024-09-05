@@ -22,7 +22,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.21.1"
+ver="1.23"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -38,7 +38,7 @@ cd $HOME
 rm -rf celestia-app 
 git clone https://github.com/celestiaorg/celestia-app.git 
 cd celestia-app/ 
-APP_VERSION=v1.11.0
+APP_VERSION=v2.1.2
 git checkout tags/$APP_VERSION -b $APP_VERSION
 make install
 celestia version
@@ -171,7 +171,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.14.0 
+git checkout tags/v0.16.0 
 make build 
 make install 
 make cel-key 
@@ -271,7 +271,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.14.0 
+git checkout tags/v0.16.0 
 make build 
 make install 
 make cel-key 
@@ -350,7 +350,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.21.1"
+ver="1.23"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -366,7 +366,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.14.0 
+git checkout tags/v0.16.0 
 make build 
 make install 
 make cel-key 
