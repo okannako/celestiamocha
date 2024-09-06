@@ -300,8 +300,6 @@ ExecStart=/usr/local/bin/celestia full start --core.ip rpc-mocha.pops.one:26657 
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
-
-[Install]
 WantedBy=multi-user.target
 EOF
 ```
@@ -391,7 +389,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/celestia light start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.backend test --keyring.keyname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+ExecStart=/usr/local/bin/celestia light start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.backend test --keyring.keyname my_celes_key  --keyring.keyname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
