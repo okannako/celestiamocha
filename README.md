@@ -22,7 +22,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.23"
+ver="1.23.1"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -177,7 +177,7 @@ make install
 make cel-key 
 ```
 
-- Versiyon Kontrol ```celestia version``` >>> 0.14.0
+- Versiyon Kontrol ```celestia version``` >>> 0.16.0
 
 ### Init İşlemi
 ```
@@ -201,7 +201,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/celestia bridge start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+ExecStart=/usr/local/bin/celestia bridge start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.backend test --keyring.keyname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
@@ -296,7 +296,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/celestia full start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+ExecStart=/usr/local/bin/celestia full start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.backend test --keyring.keyname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
@@ -350,7 +350,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.23"
+ver="1.23.1"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -391,7 +391,7 @@ After=network-online.target
 
 [Service]
 User=root
-ExecStart=/usr/local/bin/celestia light start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
+ExecStart=/usr/local/bin/celestia light start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.backend test --keyring.keyname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=100000
