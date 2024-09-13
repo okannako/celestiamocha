@@ -155,7 +155,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.21.1"
+ver="1.23.1"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -255,7 +255,7 @@ sudo apt install make -y
 
 ### Go Yüklemek
 ```
-ver="1.21.1"
+ver="1.23.1"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
