@@ -38,7 +38,7 @@ cd $HOME
 rm -rf celestia-app 
 git clone https://github.com/celestiaorg/celestia-app.git 
 cd celestia-app/ 
-APP_VERSION=v2.1.2
+APP_VERSION=v2.3.1
 git checkout tags/$APP_VERSION -b $APP_VERSION
 make install
 celestia version
@@ -171,13 +171,13 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.0 
+git checkout tags/v0.16.2 
 make build 
 make install 
 make cel-key 
 ```
 
-- Versiyon Kontrol ```celestia version``` >>> 0.16.0
+- Versiyon Kontrol ```celestia version``` >>> 0.16.2
 
 ### Init İşlemi
 ```
@@ -271,7 +271,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.0 
+git checkout tags/v0.16.2 
 make build 
 make install 
 make cel-key 
@@ -364,7 +364,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.0 
+git checkout tags/v0.16.2 
 make build 
 make install 
 make cel-key 
@@ -425,4 +425,19 @@ sudo systemctl disable celestia-light
 rm -rf $HOME/celestia-node  
 rm -rf $HOME/.celestia-light-mocha
 rm -rf $HOME/.celestia-app
+```
+
+### bbr Aktif Hale Getirmek (Mutlaka Yapın)
+- Aşağıdaki kodları girerek basit bir şekilde aktifleştirebilirsiniz.
+```
+cd celestia-app
+make enable-bbr
+```
+
+- Eğer yukarıdaki kodlarda hata alırsanız aşağıdaki kodla aktif hale getirebilirsiniz.
+```
+sudo modprobe tcp_bbr; \
+        echo "net.core.default_qdisc=fq" | sudo tee -a /etc/sysctl.conf; \
+        echo "net.ipv4.tcp_congestion_control=bbr" | sudo tee -a /etc/sysctl.conf; \
+        sudo sysctl -p; \
 ```
